@@ -90,3 +90,8 @@ At the moment intention.js is available as a script tag.
 ```html
 <script src="path/to/intention.js"></script>
 ```
+
+## References
+
+- [monads in javascript](https://curiosity-driven.org/monads-in-javascript)
+- [Async IO monad](https://gist.github.com/sharkbrainguy/9224895)
