@@ -1,0 +1,25 @@
+{
+  "name": "intention",
+  "version": "0.1.0",
+  "description": "Pure implementation of the JavaScript fetch API exposing an analogue to the promise API",
+  "main": "intention.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrowdHailer/intention.js.git"
+  },
+  "keywords": [
+    "promise",
+    "functional",
+    "utility",
+    "pure"
+  ],
+  "author": "Peter Saxton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CrowdHailer/intention.js/issues"
+  },
+  "homepage": "https://github.com/CrowdHailer/intention.js#readme"
+}
