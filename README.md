@@ -6,6 +6,12 @@ Using intention.js gives you the same convenient API as well as managing side ef
 
 *N.B. if you want to support all browsers you will need a polyfill for fetch and possibly es6-promises*
 
+---
+
+This is an experimental project, it is similar to some of the below projects but I am pushing Intention.js to be mostly tied to the fetch API.
+
+- [folktale / data.task](https://github.com/folktale/data.task)
+
 ## Usage
 
 The fetch function supports any HTTP method. We'll focus on GET and POST example requests.
