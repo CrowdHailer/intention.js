@@ -1,4 +1,4 @@
-# intention.js
+# Intention.js
 **Pure implementation of the JavaScript fetch API exposing an analogue to the promise API.**
 
 The global fetch function is an easier way to make web requests and handle responses than using an XMLHttpRequest.
@@ -22,7 +22,7 @@ var getPage = new HTTPAction(function (fetch) {
   })
 })
 
-// No externam call is made untill the action is run
+// No external call is made untill the action is run
 getPage.run(window.fetch).then(function (body) {
   console.log(body)
 })
