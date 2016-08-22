@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./intention.js"></script>
+  <script src="https://npmcdn.com/axios/dist/axios.min.js"></script>
+  <title>Client Test</title>
+</head>
+<body>
+  <h1>hello</h1>
+  <script type="text/javascript">
+    console.log('hello')
+    var log = window.console.log.bind(console)
+
+    function parseJSON (response) {
+      if (response.ok) {
+        return response.json()
+      } else {
+        throw new Error(response.status)
+      }
+    }
+
+    function encodeFormData (data) {
+      var urlEncodedData = "";
+      var urlEncodedDataPairs = [];
+      var name;
+
+      // We turn the data object into an array of URL encoded key value pairs.
+      for(name in data) {
+        urlEncodedDataPairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+      }
+
+      // We combine the pairs into a single string and replace all encoded spaces to
+      // the plus character to match the behaviour of the web browser form submit.
+      urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+      return urlEncodedData
+    }
+
+    var Passports = {
+      create: function (email) {
+        return HTTPAction.request('http://api.goodoverlord.com/api/passport', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            email: email,
+            password: 'password',
+            name: 'something'
+          }),
+        }).then(parseJSON)
+      }
+    }
+
+    var myEmail = 'abloj@gm.com'
+
+    var signup = Passports.create(myEmail)
+    var body = encodeFormData({
+      username: myEmail,
+      password: 'password',
+      grant_type: 'password'
+    })
+    console.log(body)
+
+    login = HTTPAction.request('http://api.goodoverlord.com/api/oauth/token', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
+      body: body
+    }).then(parseJSON)
+
+    signup.run(window.fetch).then(function (r) {
+      console.log(r)
+      login.run(window.fetch).then(log)
+    })
+  </script>
+</body>
+</html>
