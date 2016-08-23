@@ -16,7 +16,7 @@
   </form>
   <script type="text/javascript">
     console.log('hello')
-    var log = window.console.log.bind(console)
+    var log = window.console.log.bind(window.console)
 
     function parseJSON (response) {
       if (response.ok) {
@@ -44,7 +44,7 @@
 
     var Passports = {
       create: function (email) {
-        return HTTPAction.request('http://api.goodoverlord.com/api/passport', {
+        return Intention.fetch('http://api.goodoverlord.com/api/passport', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -70,15 +70,15 @@
 
 
 
-    login = HTTPAction.request('http://api.goodoverlord.com/api/oauth/token', {
+    login = Intention.fetch('http://api.goodoverlord.com/api/oauth/token', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
       body: body
     }).then(parseJSON)
 
-    // signup.run(window.fetch).then(function (r) {
+    // signup.run(window).then(function (r) {
     //   console.log(r)
-    //   login.run(window.fetch).then(log)
+    //   login.run(window).then(log)
     // })
 
     // function doSignup (evt) {
@@ -97,13 +97,19 @@
           password: 'password',
           grant_type: 'password'
         })
-        return HTTPAction.request('http://api.goodoverlord.com/api/oauth/token', {
+        return Intention.fetch('http://api.goodoverlord.com/api/oauth/token', {
           method: 'POST',
           headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
           body: body
         }).then(parseJSON)
-      }).then(log).run(window.fetch)
+      }).then(log).run(window)
     }, false)
+  </script>
+  <script src="./test.js"></script>
+  <script type="text/javascript">
+    function liveTest (fixture) {
+      var email = fixture.email
+    }
   </script>
 </body>
 </html>

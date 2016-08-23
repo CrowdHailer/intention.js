@@ -22,14 +22,14 @@ All examples in sandbox call out to the [JSON placeholder api](https://jsonplace
 ### Simple request
 
 ```js
-var getPage = new HTTPAction(function (fetch) {
+var getPage = new Intention(function (fetch) {
   return fetch('/users.html').then(function (response) {
     return response.text()
   })
 })
 
 // No external call is made untill the action is run
-getPage.run(window.fetch).then(function (body) {
+getPage.run(window).then(function (body) {
   console.log(body)
 })
 ```
@@ -38,7 +38,7 @@ getPage.run(window.fetch).then(function (body) {
 *Creates the same getPage action*
 
 ```js
-var getPage = HTTPAction.request('/users.html').then(function (response) {
+var getPage = Intention.fetch('/users.html').then(function (response) {
   return response.text
 })
 ```
@@ -56,11 +56,11 @@ function parseJSONResponse (response) {
 }
 
 function getPost (id) {
-  return HTTPAction.request('/posts/' + id).then(parseJSON)
+  return Intention.fetch('/posts/' + id).then(parseJSON)
 }
 
 getPost(1)
-  .run(window.fetch)
+  .run(window)
   .then(console.log.bind(console))
   .catch(console.error.bind(console))
 ```
@@ -70,7 +70,7 @@ Again following the API of promises shows us how to chain API calls.
 
 ```js
 function getUser (id) {
-  return HTTPAction.request('/users/' + id).then(parseJSON)
+  return Intention.fetch('/users/' + id).then(parseJSON)
 }
 
 var getPostsUser = getPost

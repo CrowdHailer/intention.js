@@ -1,4 +1,4 @@
-const log = window.console.log.bind(console)
+const log = window.console.log.bind(window.console)
 
 function example () {
   const root = 'http://jsonplaceholder.typicode.com';
@@ -12,12 +12,12 @@ function example () {
 
   const Posts = {
     fetch: function (id) {
-      return HTTPAction.request(root + '/posts/' + id).then(parseJSON)
+      return Intention.fetch(root + '/posts/' + id).then(parseJSON)
     }
   }
   const Users = {
     fetch: function (id) {
-      return HTTPAction.request(root + '/users/' + id).then(parseJSON)
+      return Intention.fetch(root + '/users/' + id).then(parseJSON)
     }
   }
 
@@ -32,7 +32,7 @@ function example () {
   // })
 
   console.log(action)
-  action.run(window.fetch).then(log)
+  action.run(window).then(log)
   // action is reusable
-  action.run(window.fetch).then(log)
+  action.run(window).then(log)
 }

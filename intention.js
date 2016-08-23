@@ -1,7 +1,7 @@
 // Monad laws
 // https://curiosity-driven.org/monads-in-javascript
 // 1. bind(unit(x), f) ≡ f(x)
-//    => HTTPAction.unit(x).flatMap(fn) = fn(x)
+//    => Intention.unit(x).flatMap(fn) = fn(x)
 //    x: A
 //    fn: A -> M[B]
 
@@ -14,29 +14,29 @@
 // Promises
 // The then method is a combination of flatMap and map
 
-// HTTPAction.success(x) = HTTPAction.unit(new Promise(x))
-function HTTPAction (httpEffect) {
+// Intention.success(x) = Intention.unit(new Promise(x))
+function Intention (effectFn) {
 
   function map (mappingFunction) {
-    return new HTTPAction(function (fetch) {
-      return httpEffect(fetch).then(mappingFunction)
+    return new Intention(function (io) {
+      return effectFn(io).then(mappingFunction)
     })
   }
 
   function flatMap (transformFunction) {
-    return new HTTPAction (function (fetch) {
-      return httpEffect(fetch).then(function(x) {
-        return transformFunction(x).run(fetch)
+    return new Intention (function (io) {
+      return effectFn(io).then(function(x) {
+        return transformFunction(x).run(io)
       })
     })
   }
 
   function then (continuation) {
-    return new HTTPAction (function (fetch) {
-      return httpEffect(fetch).then(function (x) {
+    return new Intention (function (io) {
+      return effectFn(io).then(function (x) {
         const mappedValue = continuation(x)
-        if (mappedValue instanceof HTTPAction) {
-          return mappedValue.run(fetch)
+        if (mappedValue instanceof Intention) {
+          return mappedValue.run(io)
         } else {
           return mappedValue
         }
@@ -45,28 +45,28 @@ function HTTPAction (httpEffect) {
   }
 
   Object.assign(this, {
-    run: httpEffect,
+    run: effectFn,
     map: map,
     flatMap: flatMap,
     then: then
   })
 }
 
-HTTPAction.success = function (value) {
-  return new HTTPAction(function () {
+Intention.success = function (value) {
+  return new Intention(function () {
     return Promise.resolve(value)
   })
 }
 
-HTTPAction.failure = function (reason) {
-  return new HTTPAction(function () {
+Intention.failure = function (reason) {
+  return new Intention(function () {
     return Promise.reject(reason)
   })
 }
 
 // TODO untested
-HTTPAction.request = function (path, opts) {
-  return new HTTPAction(function (fetch) {
-    return fetch(path, opts)
+Intention.fetch = function (path, opts) {
+  return new Intention(function (io) {
+    return io.fetch(path, opts)
   })
 }
