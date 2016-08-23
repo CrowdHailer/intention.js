@@ -43,54 +43,35 @@
     }
 
     var Passports = {
-      create: function (email) {
+      create: function (data) {
         return Intention.fetch('http://api.goodoverlord.com/api/passport', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            email: email,
-            password: 'password',
-            name: 'something'
-          }),
+          body: JSON.stringify(data),
+        }).then(parseJSON).then(function (entity) {return entity.data})
+      }
+    }
+
+    var Auth = {
+      token: function (authority) {
+        return Intention.fetch('http://api.goodoverlord.com/api/oauth/token', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
+          body: encodeFormData({
+            username: authority.email,
+            password: authority.password,
+            grant_type: 'password'
+          })
         }).then(parseJSON)
       }
     }
 
-    var myEmail = 'ablojj12233@gm.com'
-
-    var signup = Passports.create(myEmail)
-
-
-    var body = encodeFormData({
-      username: myEmail,
-      password: 'password',
-      grant_type: 'password'
-    })
-    // console.log(body)
-
-
-
-    login = Intention.fetch('http://api.goodoverlord.com/api/oauth/token', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
-      body: body
-    }).then(parseJSON)
-
-    // signup.run(window).then(function (r) {
-    //   console.log(r)
-    //   login.run(window).then(log)
-    // })
-
-    // function doSignup (evt) {
-    //   evt.preventDefault()
-    //   console.log(this)
-    // }
     var $form = document.querySelector('form')
     var $email = document.querySelector('[name=email]')
     $form.addEventListener('submit', function (evt) {
       evt.preventDefault()
       var email = $email.value
-      Passports.create(email).then(function (json) {
+      Passports.create({email: email, name: 'test', password: 'password'}).then(function (json) {
         console.log(json)
         var body = encodeFormData({
           username: email,
@@ -108,7 +89,26 @@
   <script src="./test.js"></script>
   <script type="text/javascript">
     function liveTest (fixture) {
-      var email = fixture.email
+      var email = fixture.email;
+
+      (function () {
+        // Move passport creation to setup or serialise testing.
+        var action = Passports.create({email: email, name: 'test', password: 'password'})
+        action.run(window).then(function (passport) {
+          console.log(passport)
+          console.info(passport.name === 'test', 'correct passport name');
+          console.info(passport.email === email, 'correct passport email');
+          console.info(passport.id.length > 0, 'passport has id');
+        }).then(function () {
+          return Auth.token({email: email, password: 'password'}).run(window)
+        }).then(function (credentials) {
+          console.log(credentials)
+          return credentials
+        }).then(function (credentials) {
+          
+        });
+      }());
+
     }
   </script>
 </body>
