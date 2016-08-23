@@ -10,6 +10,10 @@
 </head>
 <body>
   <h1>hello</h1>
+  <form>
+    <input type="email" name="email">
+    <button type="submit">signup</button>
+  </form>
   <script type="text/javascript">
     console.log('hello')
     var log = window.console.log.bind(console)
@@ -52,15 +56,19 @@
       }
     }
 
-    var myEmail = 'abloj@gm.com'
+    var myEmail = 'ablojj12233@gm.com'
 
     var signup = Passports.create(myEmail)
+
+
     var body = encodeFormData({
       username: myEmail,
       password: 'password',
       grant_type: 'password'
     })
-    console.log(body)
+    // console.log(body)
+
+
 
     login = HTTPAction.request('http://api.goodoverlord.com/api/oauth/token', {
       method: 'POST',
@@ -68,10 +76,34 @@
       body: body
     }).then(parseJSON)
 
-    signup.run(window.fetch).then(function (r) {
-      console.log(r)
-      login.run(window.fetch).then(log)
-    })
+    // signup.run(window.fetch).then(function (r) {
+    //   console.log(r)
+    //   login.run(window.fetch).then(log)
+    // })
+
+    // function doSignup (evt) {
+    //   evt.preventDefault()
+    //   console.log(this)
+    // }
+    var $form = document.querySelector('form')
+    var $email = document.querySelector('[name=email]')
+    $form.addEventListener('submit', function (evt) {
+      evt.preventDefault()
+      var email = $email.value
+      Passports.create(email).then(function (json) {
+        console.log(json)
+        var body = encodeFormData({
+          username: email,
+          password: 'password',
+          grant_type: 'password'
+        })
+        return HTTPAction.request('http://api.goodoverlord.com/api/oauth/token', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'},
+          body: body
+        }).then(parseJSON)
+      }).then(log).run(window.fetch)
+    }, false)
   </script>
 </body>
 </html>
