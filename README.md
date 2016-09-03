@@ -97,6 +97,13 @@ At the moment intention.js is available as a script tag.
 <script src="path/to/intention.js"></script>
 ```
 
+## Extentions
+
+- Return the world/capability object so testing environment can have pure external state.
+- write example for slow stack, ie [stack monad](http://igstan.ro/posts/2011-05-02-understanding-monads-with-javascript.html) returning promise.
+- comparison to capability object.
+- modifier to turn 2arg function to capability object.
+
 ## References
 
 - [monads in javascript](https://curiosity-driven.org/monads-in-javascript)
